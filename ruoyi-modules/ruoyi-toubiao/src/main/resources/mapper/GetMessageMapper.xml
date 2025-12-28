@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.dromara.toubiao.mapper.GetMessageMapper">
+
+    <insert id="insertIntoTenderProjectList">
+        insert into tender_project_detail(area, changdi, infoid, kaibiaodate, proname, prono)
+        values
+        <foreach collection="tenderProjectDetailList" item="tenderProjectDetail" separator=",">
+            (#{tenderProjectDetail.area}, #{tenderProjectDetail.changdi}, #{tenderProjectDetail.infoid},
+            #{tenderProjectDetail.kaibiaodate}, #{tenderProjectDetail.proname}, #{tenderProjectDetail.prono})
+        </foreach>
+    </insert>
+
+    <select id="selectMissingInfoUrlList" resultType="org.dromara.toubiao.domain.TenderProjectDetail">
+        SELECT
+            infoid,
+            info_url as infoUrl
+        FROM tender_project_detail
+        WHERE infoid IS NOT NULL
+          AND infoid != ''
+          AND (info_url IS NULL OR info_url = '')
+    </select>
+
+    <update id="updateTenderProjectDetail">
+        UPDATE tender_project_detail
+        <set>
+            <if test="infoUrl != null and infoUrl != ''">
+                info_url = #{infoUrl}
+            </if>
+        </set>
+        WHERE infoid = #{infoid}
+    </update>
+
+</mapper>

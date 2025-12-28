@@ -1,0 +1,35 @@
+# IDE
+.idea/
+*.iml
+.run/
+.vscode/
+
+# Maven
+target/
+**/target/
+
+# Node
+node_modules/
+dist/
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Config
+application-dev.yml
+application-test.yml
+application-prod.yml
+.env
+
+# ruoyi
+ruoyi-admin/src/main/resources/application-*.yml
+
+# gitee
+.gitee/
+
+.flattened-pom.xml
