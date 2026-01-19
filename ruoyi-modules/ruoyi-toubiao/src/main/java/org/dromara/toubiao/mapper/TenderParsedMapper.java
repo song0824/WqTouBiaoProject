@@ -2,6 +2,7 @@ package org.dromara.toubiao.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.dromara.toubiao.domain.TenderProjectDetail;
 import org.dromara.toubiao.domain.TenderProjectDetailParsed;
 
@@ -101,4 +102,16 @@ public interface TenderParsedMapper {
      * @return 数量
      */
     int countByStatus(@Param("status") int status);
+
+    @Select("SELECT t.id, t.infoid, t.info_url, t.proname, t.prono, t.area, t.kaibiaodate " +
+        "FROM tender_project_detail t " +
+        "WHERE t.info_url IS NOT NULL AND t.info_url != '' " +
+        "AND NOT EXISTS ( " +
+        "    SELECT 1 FROM tender_project_detail_parsed p " +
+        "    WHERE p.infoid = t.infoid AND p.parse_status = 2 " +  // 排除已成功的记录
+        ") " +
+        "ORDER BY t.kaibiaodate DESC LIMIT #{limit}")
+    List<TenderProjectDetail> selectUnparsedExcludingSuccess(@Param("limit") int limit);
+
+
 }

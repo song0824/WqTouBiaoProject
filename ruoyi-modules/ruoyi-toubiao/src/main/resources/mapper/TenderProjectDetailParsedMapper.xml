@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.dromara.toubiao.mapper.TenderProjectDetailParsedMapper">
+
+    <resultMap id="BaseResultMap" type="org.dromara.toubiao.domain.TenderProjectDetailParsed">
+        <id column="id" property="id" />
+        <result column="infoid" property="infoid" />
+        <result column="info_url" property="infoUrl" />
+        <result column="prono" property="prono" />
+        <result column="proname" property="proname" />
+        <result column="budget_amount" property="budgetAmount" />
+        <result column="tender_method" property="tenderMethod" />
+        <result column="area" property="area" />
+        <result column="publish_time" property="publishTime" />
+        <result column="doc_start_time" property="docStartTime" />
+        <result column="doc_end_time" property="docEndTime" />
+        <result column="bidding_deadline" property="biddingDeadline" />
+        <result column="kaibiaodate" property="kaibiaodate" />
+        <result column="changdi" property="changdi" />
+        <result column="purchaser" property="purchaser" />
+        <result column="purchaser_address" property="purchaserAddress" />
+        <result column="purchaser_phone" property="purchaserPhone" />
+        <result column="agent_company" property="agentCompany" />
+        <result column="agent_address" property="agentAddress" />
+        <result column="agent_phone" property="agentPhone" />
+        <result column="project_contact" property="projectContact" />
+        <result column="project_phone" property="projectPhone" />
+        <result column="section_project_need" property="sectionProjectNeed" />
+        <result column="section_project_overview" property="sectionProjectOverview" />
+        <result column="section_basic_info" property="sectionBasicInfo" />
+        <result column="section_qualification" property="sectionQualification" />
+        <result column="section_doc_acquisition" property="sectionDocAcquisition" />
+        <result column="section_bidding_schedule" property="sectionBiddingSchedule" />
+        <result column="section_announcement_period" property="sectionAnnouncementPeriod" />
+        <result column="section_other_matters" property="sectionOtherMatters" />
+        <result column="section_contact" property="sectionContact" />
+        <result column="parse_status" property="parseStatus" />
+        <result column="parse_time" property="parseTime" />
+        <result column="parse_retry_count" property="parseRetryCount" />
+        <result column="parse_error_msg" property="parseErrorMsg" />
+        <result column="is_ai_classified" property="isAiClassified" />
+        <result column="ai_classify_time" property="aiClassifyTime" />
+        <result column="created_time" property="createdTime" />
+        <result column="updated_time" property="updatedTime" />
+    </resultMap>
+
+    <!-- 查询所有数据 -->
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT * FROM tender_project_detail_parsed
+        --ORDER BY created_time DESC
+    </select>
+
+    <!-- 分页查询 -->
+    <select id="selectPageList" resultMap="BaseResultMap">
+        SELECT * FROM tender_project_detail_parsed
+        --ORDER BY created_time DESC
+    </select>
+
+    <!-- 根据ID查询 -->
+    <select id="selectById" resultMap="BaseResultMap">
+        SELECT * FROM tender_project_detail_parsed
+        WHERE id = #{id}
+    </select>
+
+
+</mapper>
