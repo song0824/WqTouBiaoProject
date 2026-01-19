@@ -28,7 +28,7 @@ public class TenderProjectDetailParsedController {
      * 1. 查询所有数据
      * GET /api/tender-parsed/all
      */
-    @SaIgnore
+   // @SaIgnore
     @GetMapping("/all")
     public R<List<TenderProjectDetailParsed>> getAll() {
         try {
@@ -47,7 +47,7 @@ public class TenderProjectDetailParsedController {
      * @param pageNum 当前页码，默认为1
      * @param pageSize 每页大小，默认为10
      */
-    @SaIgnore
+    //@SaIgnore
     @GetMapping("/page")
     public R<Map<String, Object>> getPage(
         @RequestParam(defaultValue = "1") Integer pageNum,
@@ -75,7 +75,7 @@ public class TenderProjectDetailParsedController {
      *
      * @param id 主键ID
      */
-    @SaIgnore
+    //@SaIgnore
     @GetMapping("/{id}")
     public R<TenderProjectDetailParsed> getById(@PathVariable Integer id) {
         try {
