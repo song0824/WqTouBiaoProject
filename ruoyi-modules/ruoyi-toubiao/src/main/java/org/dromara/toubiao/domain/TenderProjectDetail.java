@@ -38,7 +38,13 @@ public class TenderProjectDetail {
     private String area;
 
     /**
-     * 备用字段
+     * 备用字段 - 用作解析状态标识
+     * 状态说明：
+     * null/空: 未解析（默认）
+     * 1: 解析成功
+     * 2: 解析失败
+     * 3: 跳过（非标准格式）
+     * 4: 处理中（临时状态）
      */
     private String bak;
 

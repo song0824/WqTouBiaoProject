@@ -30,5 +30,86 @@
         </set>
         WHERE infoid = #{infoid}
     </update>
+    <select id="countUnparsedRecords" resultType="int">
+        SELECT COUNT(*)
+        FROM tender_project_detail t
+        WHERE NOT EXISTS (
+            SELECT 1
+            FROM tender_project_detail_parsed p
+            WHERE p.infoid = t.infoid)
+    </select>
+    <!-- 统计未解析记录数（bak为null且未在parsed表中） -->
+    <select id="countUnparsedRecordsOnlyS" resultType="int">
+        SELECT COUNT(*)
+        FROM tender_project_detail t
+        WHERE t.info_url IS NOT NULL
+          AND t.info_url != ''
+        AND t.bak IS NULL
+        AND NOT EXISTS (
+            SELECT 1
+            FROM tender_project_detail_parsed p
+            WHERE p.infoid = t.infoid
+        )
+    </select>
+
+    <!-- 查询待解析记录（bak为null） -->
+    <select id="selectUnparsedListOnlyS" resultType="org.dromara.toubiao.domain.TenderProjectDetail">
+        SELECT t.id, t.infoid, t.info_url, t.proname, t.prono, t.area, t.kaibiaodate, t.bak
+        FROM tender_project_detail t
+        WHERE t.info_url IS NOT NULL
+          AND t.info_url != ''
+        AND t.bak IS NULL
+        ORDER BY t.kaibiaodate DESC
+            LIMIT #{limit}
+    </select>
+
+    <!-- 更新解析状态（bak字段） -->
+    <update id="updateParseStatus">
+        UPDATE tender_project_detail
+        SET bak = #{status}
+        WHERE infoid = #{infoid}
+    </update>
+
+    <!-- 根据infoid查询记录 -->
+    <select id="selectByInfoId" resultType="org.dromara.toubiao.domain.TenderProjectDetail">
+        SELECT t.id, t.infoid, t.info_url, t.proname, t.prono, t.area, t.kaibiaodate, t.bak
+        FROM tender_project_detail t
+        WHERE t.infoid = #{infoid}
+    </select>
+
+    <!-- 根据状态统计记录数 -->
+    <select id="countByStatus" resultType="int">
+        SELECT COUNT(*)
+        FROM tender_project_detail
+        WHERE bak = #{status}
+    </select>
+
+    <!-- 重置失败记录状态 -->
+    <update id="resetFailedStatus">
+        UPDATE tender_project_detail
+        SET bak = NULL
+        WHERE infoid = #{infoid}
+          AND bak = '2'
+    </update>
+
+    <!-- 批量更新解析状态 -->
+    <update id="batchUpdateParseStatus">
+        <foreach collection="infoids" item="infoid" separator=";">
+            UPDATE tender_project_detail
+            SET bak = #{status}
+            WHERE infoid = #{infoid}
+        </foreach>
+    </update>
+
+    <!-- 查询成功记录 -->
+    <select id="selectSuccessRecords" resultType="org.dromara.toubiao.domain.TenderProjectDetail">
+        SELECT t.id, t.infoid, t.info_url, t.proname, t.prono, t.area, t.kaibiaodate, t.bak
+        FROM tender_project_detail t
+        WHERE t.bak = '1'
+        ORDER BY t.kaibiaodate DESC
+            LIMIT #{limit}
+    </select>
+
 
 </mapper>
+
