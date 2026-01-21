@@ -263,3 +263,50 @@ warm-flow:
   node-tooltip: true
   # 默认Authorization，如果有多个token，用逗号分隔
   token-name: ${sa-token.token-name},clientid
+
+
+langchain4j:
+  open-ai:
+    chat-model:
+      base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+      api-key: sk-82b7b620f59347b4a71033e52db3998c
+      model-name: kimi-k2-thinking
+      log-requests: true
+      log-responses: true
+    streaming-chat-model:
+      base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+      api-key: sk-cb7d9717b6664086a38f9b02c1bdb0cc
+      model-name: kimi-k2-thinking
+      log-requests: true
+      log-responses: true
+
+
+
+
+# 统一的向量配置
+vector:
+  aliyun:
+    enabled: false
+    api-key: sk-b7b832f8dba3412a8007724961a72cd0
+    model-name: text-embedding-v4
+    dimension: 1536
+    endpoint: "https://dashscope.aliyuncs.com/api/v1/services/embeddings/text-embedding/text-embedding"
+
+
+  qdrant:
+    host: "e6e83f2f-57e0-417f-8950-841d4642b153.us-east4-0.gcp.cloud.qdrant.io"
+    port: 6334
+    api-key: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3MiOiJtIn0.7IVIHfqkO8NFYMaha_jyn5MYEHF3MiLk46KXkFFJQhc
+    collection: "yunwei_info"
+
+
+  # 文件存储路径配置
+file:
+  upload:
+    # 本地存储路径（绝对路径）
+    path: E:/AIGC_yunwei_RAG/avatars/
+    # 访问URL前缀
+    url-prefix: /files/avatars/
+
+
+

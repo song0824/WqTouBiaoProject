@@ -68,11 +68,11 @@ public class HebeiTenderServiceImpl implements HebeiTenderService {
 
             // 2. 使用线程池并发处理实体对象
             List<CompletableFuture<Void>> futures = missingList.stream()
-                    .map(detail -> CompletableFuture.runAsync(() -> {
-                        // 传入整个对象进行处理
-                        processSingleUrl(detail);
-                    }, HebeiHttpClientCommonFactory.getExecutor()))
-                    .collect(Collectors.toList());
+                .map(detail -> CompletableFuture.runAsync(() -> {
+                    // 传入整个对象进行处理
+                    processSingleUrl(detail);
+                }, HebeiHttpClientCommonFactory.getExecutor()))
+                .collect(Collectors.toList());
 
             // 3. 等待本批次所有任务完成
             CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
