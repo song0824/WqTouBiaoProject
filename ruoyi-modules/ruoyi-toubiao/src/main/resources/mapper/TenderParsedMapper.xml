@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.dromara.toubiao.mapper.TenderParsedMapper">
+
+    <!-- 结果映射 -->
+    <resultMap id="BaseResultMap" type="org.dromara.toubiao.domain.TenderProjectDetailParsed">
+        <id column="id" property="id"/>
+        <result column="infoid" property="infoid"/>
+        <result column="info_url" property="infoUrl"/>
+        <result column="prono" property="prono"/>
+        <result column="proname" property="proname"/>
+        <result column="budget_amount" property="budgetAmount"/>
+        <result column="tender_method" property="tenderMethod"/>
+        <result column="area" property="area"/>
+        <result column="publish_time" property="publishTime"/>
+        <result column="doc_start_time" property="docStartTime"/>
+        <result column="doc_end_time" property="docEndTime"/>
+        <result column="bidding_deadline" property="biddingDeadline"/>
+        <result column="kaibiaodate" property="kaibiaodate"/>
+        <result column="changdi" property="changdi"/>
+        <result column="purchaser" property="purchaser"/>
+        <result column="purchaser_address" property="purchaserAddress"/>
+        <result column="purchaser_phone" property="purchaserPhone"/>
+        <result column="agent_company" property="agentCompany"/>
+        <result column="agent_address" property="agentAddress"/>
+        <result column="agent_phone" property="agentPhone"/>
+        <result column="project_contact" property="projectContact"/>
+        <result column="project_phone" property="projectPhone"/>
+        <result column="section_project_need" property="sectionProjectNeed"/>
+        <result column="section_project_overview" property="sectionProjectOverview"/>
+        <result column="section_basic_info" property="sectionBasicInfo"/>
+        <result column="section_qualification" property="sectionQualification"/>
+        <result column="section_doc_acquisition" property="sectionDocAcquisition"/>
+        <result column="section_bidding_schedule" property="sectionBiddingSchedule"/>
+        <result column="section_announcement_period" property="sectionAnnouncementPeriod"/>
+        <result column="section_other_matters" property="sectionOtherMatters"/>
+        <result column="section_contact" property="sectionContact"/>
+        <result column="parse_status" property="parseStatus"/>
+        <result column="parse_time" property="parseTime"/>
+        <result column="parse_retry_count" property="parseRetryCount"/>
+        <result column="parse_error_msg" property="parseErrorMsg"/>
+        <result column="is_ai_classified" property="isAiClassified"/>
+        <result column="ai_classify_time" property="aiClassifyTime"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="updated_time" property="updatedTime"/>
+    </resultMap>
+
+    <!-- 插入（修复版：处理null值） -->
+    <insert id="insert" parameterType="org.dromara.toubiao.domain.TenderProjectDetailParsed">
+        INSERT INTO tender_project_detail_parsed (
+            infoid, info_url, prono, proname, budget_amount, tender_method, area,
+            publish_time, doc_start_time, doc_end_time, bidding_deadline, kaibiaodate, changdi,
+            purchaser, purchaser_address, purchaser_phone,
+            agent_company, agent_address, agent_phone,
+            project_contact, project_phone,
+            section_project_need, section_project_overview,
+            section_basic_info, section_qualification, section_doc_acquisition,
+            section_bidding_schedule, section_announcement_period, section_other_matters, section_contact,
+            parse_status, parse_time, parse_retry_count, parse_error_msg,
+            is_ai_classified, ai_classify_time
+        ) VALUES (
+                     #{infoid}, #{infoUrl}, #{prono}, #{proname}, #{budgetAmount}, #{tenderMethod}, #{area},
+                     #{publishTime}, #{docStartTime}, #{docEndTime}, #{biddingDeadline}, #{kaibiaodate}, #{changdi},
+                     #{purchaser}, #{purchaserAddress}, #{purchaserPhone},
+                     #{agentCompany}, #{agentAddress}, #{agentPhone},
+                     #{projectContact}, #{projectPhone},
+                     #{sectionProjectNeed}, #{sectionProjectOverview},
+                     #{sectionBasicInfo}, #{sectionQualification}, #{sectionDocAcquisition},
+                     #{sectionBiddingSchedule}, #{sectionAnnouncementPeriod}, #{sectionOtherMatters}, #{sectionContact},
+                     #{parseStatus}, #{parseTime},
+                     COALESCE(#{parseRetryCount}, 0),
+                     #{parseErrorMsg},
+                     COALESCE(#{isAiClassified}, 0),
+                     #{aiClassifyTime}
+                 )
+    </insert>
+
+    <!-- 更新 -->
+    <update id="update" parameterType="org.dromara.toubiao.domain.TenderProjectDetailParsed">
+        UPDATE tender_project_detail_parsed
+        <set>
+            <if test="infoUrl != null">info_url = #{infoUrl},</if>
+            <if test="prono != null">prono = #{prono},</if>
+            <if test="proname != null">proname = #{proname},</if>
+            <if test="budgetAmount != null">budget_amount = #{budgetAmount},</if>
+            <if test="tenderMethod != null">tender_method = #{tenderMethod},</if>
+            <if test="area != null">area = #{area},</if>
+            <if test="publishTime != null">publish_time = #{publishTime},</if>
+            <if test="docStartTime != null">doc_start_time = #{docStartTime},</if>
+            <if test="docEndTime != null">doc_end_time = #{docEndTime},</if>
+            <if test="biddingDeadline != null">bidding_deadline = #{biddingDeadline},</if>
+            <if test="kaibiaodate != null">kaibiaodate = #{kaibiaodate},</if>
+            <if test="changdi != null">changdi = #{changdi},</if>
+            <if test="purchaser != null">purchaser = #{purchaser},</if>
+            <if test="purchaserAddress != null">purchaser_address = #{purchaserAddress},</if>
+            <if test="purchaserPhone != null">purchaser_phone = #{purchaserPhone},</if>
+            <if test="agentCompany != null">agent_company = #{agentCompany},</if>
+            <if test="agentAddress != null">agent_address = #{agentAddress},</if>
+            <if test="agentPhone != null">agent_phone = #{agentPhone},</if>
+            <if test="projectContact != null">project_contact = #{projectContact},</if>
+            <if test="projectPhone != null">project_phone = #{projectPhone},</if>
+            <if test="sectionProjectNeed != null">section_project_need = #{sectionProjectNeed},</if>
+            <if test="sectionProjectOverview != null">section_project_overview = #{sectionProjectOverview},</if>
+            <if test="sectionBasicInfo != null">section_basic_info = #{sectionBasicInfo},</if>
+            <if test="sectionQualification != null">section_qualification = #{sectionQualification},</if>
+            <if test="sectionDocAcquisition != null">section_doc_acquisition = #{sectionDocAcquisition},</if>
+            <if test="sectionBiddingSchedule != null">section_bidding_schedule = #{sectionBiddingSchedule},</if>
+            <if test="sectionAnnouncementPeriod != null">section_announcement_period = #{sectionAnnouncementPeriod},</if>
+            <if test="sectionOtherMatters != null">section_other_matters = #{sectionOtherMatters},</if>
+            <if test="sectionContact != null">section_contact = #{sectionContact},</if>
+            <if test="parseStatus != null">parse_status = #{parseStatus},</if>
+            <if test="parseTime != null">parse_time = #{parseTime},</if>
+            <if test="parseRetryCount != null">parse_retry_count = #{parseRetryCount},</if>
+            <if test="parseErrorMsg != null">parse_error_msg = #{parseErrorMsg},</if>
+            <if test="isAiClassified != null">is_ai_classified = #{isAiClassified},</if>
+            <if test="aiClassifyTime != null">ai_classify_time = #{aiClassifyTime},</if>
+        </set>
+        WHERE infoid = #{infoid}
+    </update>
+
+    <!-- 根据infoid查询 -->
+    <select id="selectByInfoId" resultMap="BaseResultMap">
+        SELECT * FROM tender_project_detail_parsed
+        WHERE infoid = #{infoid}
+    </select>
+
+    <!-- 查询待解析列表 -->
+    <select id="selectUnparsedList" resultType="org.dromara.toubiao.domain.TenderProjectDetail">
+        SELECT t.id, t.infoid, t.info_url, t.proname, t.prono, t.area, t.kaibiaodate
+        FROM tender_project_detail t
+                 LEFT JOIN tender_project_detail_parsed p ON t.infoid = p.infoid
+        WHERE t.info_url IS NOT NULL
+          AND t.info_url != ''
+          AND (p.infoid IS NULL OR (p.parse_status = 3 AND p.parse_retry_count &lt; 3))
+        ORDER BY t.kaibiaodate DESC
+            LIMIT #{limit}
+    </select>
+
+    <!-- 查询可重试列表 -->
+    <select id="selectRetryableList" resultMap="BaseResultMap">
+        SELECT * FROM tender_project_detail_parsed
+        WHERE parse_status = 3
+          AND parse_retry_count &lt; #{maxRetryCount}
+        ORDER BY parse_time ASC
+            LIMIT #{limit}
+    </select>
+
+    <!-- 更新解析状态 -->
+    <update id="updateParseStatus">
+        UPDATE tender_project_detail_parsed
+        SET parse_status = #{status},
+            parse_error_msg = #{errorMsg},
+            parse_time = NOW()
+        WHERE infoid = #{infoid}
+    </update>
+
+    <!-- 查询待AI分类列表 -->
+    <select id="selectUnclassifiedList" resultMap="BaseResultMap">
+        SELECT * FROM tender_project_detail_parsed
+        WHERE parse_status = 2
+          AND is_ai_classified = 0
+        ORDER BY parse_time DESC
+            LIMIT #{limit}
+    </select>
+
+    <!-- 更新AI状态 -->
+    <update id="updateAIStatus">
+        UPDATE tender_project_detail_parsed
+        SET is_ai_classified = #{status},
+            ai_classify_time = NOW()
+        WHERE infoid = #{infoid}
+    </update>
+
+    <!-- 统计状态数量 -->
+    <select id="countByStatus" resultType="int">
+        SELECT COUNT(*) FROM tender_project_detail_parsed
+        WHERE parse_status = #{status}
+    </select>
+
+</mapper>
