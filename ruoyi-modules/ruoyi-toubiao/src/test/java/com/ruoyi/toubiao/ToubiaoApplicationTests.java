@@ -1,5 +1,6 @@
 package com.ruoyi.toubiao;
 
+import org.dromara.toubiao.utils.AiCategory.CozeApiClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -9,6 +10,7 @@ class ToubiaoApplicationTests {
     @Test
     void contextLoads() {
     }
+
 
 
 }
