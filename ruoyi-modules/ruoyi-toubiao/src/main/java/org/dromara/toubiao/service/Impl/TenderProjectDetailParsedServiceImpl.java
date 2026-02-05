@@ -32,12 +32,14 @@ public class TenderProjectDetailParsedServiceImpl implements TenderProjectDetail
      * 分页查询
      * @param pageNum 当前页码
      * @param pageSize 每页大小
+     * @param position 职位名称，可为空
+     * @param title 标题，可为空
      * @return 分页结果
      */
     @Override
-    public IPage<TenderProjectDetailParsed> getPage(Integer pageNum, Integer pageSize) {
+    public IPage<TenderProjectDetailParsed> getPage(Integer pageNum, Integer pageSize, String position, String title) {
         Page<TenderProjectDetailParsed> page = new Page<>(pageNum, pageSize);
-        return tenderProjectDetailParsedMapper.selectPageList(page);
+        return tenderProjectDetailParsedMapper.selectPageList(page, position, title);
     }
 
     /**

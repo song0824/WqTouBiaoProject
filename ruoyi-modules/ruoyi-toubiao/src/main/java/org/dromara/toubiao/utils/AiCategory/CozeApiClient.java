@@ -2,11 +2,13 @@ package org.dromara.toubiao.utils.AiCategory;
 
 import com.alibaba.fastjson2.JSONObject;
 import okhttp3.*;
+import org.dromara.toubiao.domain.CategoryMessageVO;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -15,9 +17,11 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class CozeApiClient {
     // API 基础配置
-    private static final String API_URL = "https://api.coze.cn/v3/chat";
+    private static final String CHAT_API_URL = "https://api.coze.cn/v3/chat";
+    private static final String WORKFLOW_API_URL = "https://api.coze.cn/v1/workflow/stream_run";
     private static final String TOKEN = "pat_Qm71jDfphTDtWeKaMHvIBQ8cAHrN5lh28q1cjLIWuJjJmO99gkjGt80AWkAdHhIP";
     private static final String BOT_ID = "7597390389269512192";
+    private static final String WORKFLOW_ID = "7597392590997356594";
     private static final String USER_ID = "123456789";
 
     // 初始化 OkHttp 客户端（单例模式，避免重复创建）
@@ -27,19 +31,99 @@ public class CozeApiClient {
         .writeTimeout(30, TimeUnit.SECONDS)
         .build();
 
+
     /**
-     * 测试方法（非静态，适配 Spring 组件调用）
+     * 调用Coze工作流进行分类
+     * @param id 项目ID
+     * @param message 项目信息
+     * @param name 项目名称
+     * @param needs 项目需求
+     * @return CategoryMessageVO 包含分类结果
+     * @throws IOException IO异常
      */
-    public String testCozeApiCall(String message) {
-        try {
-            String result = callCozeApi(message);
-            System.out.println("最终整合结果: " + result);
-            return result;
-        } catch (IOException e) {
-            e.printStackTrace();
+    public CategoryMessageVO classifyByWorkflow(String id, String message, String name, String needs) throws IOException {
+        // 创建返回对象
+        CategoryMessageVO vo = new CategoryMessageVO();
+        vo.setId(Integer.parseInt(id));
+        vo.setIsAiClassified(true);
+        vo.setAiClassifyTime(new Date());
+
+        // 1. 构建请求体 JSON 数据
+        JSONObject requestBody = new JSONObject();
+        requestBody.put("workflow_id", WORKFLOW_ID);
+
+        // 构建参数
+        JSONObject parameters = new JSONObject();
+        parameters.put("id", id);
+        parameters.put("message", message);
+        parameters.put("name", name);
+        parameters.put("needs", needs);
+
+        requestBody.put("parameters", parameters);
+
+        // 2. 构建请求
+        Request request = new Request.Builder()
+            .url(WORKFLOW_API_URL)
+            .post(RequestBody.create(MediaType.parse("application/json; charset=utf-8"), requestBody.toJSONString()))
+            .addHeader("Authorization", "Bearer " + TOKEN)
+            .addHeader("Content-Type", "application/json")
+            .build();
+
+        // 3. 发送请求并处理流式响应
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("请求失败: " + response.code() + " " + response.message());
+            }
+
+            // 获取响应体的流式输入
+            ResponseBody responseBody = response.body();
+            if (responseBody == null) {
+                System.out.println("响应体为空");
+                return vo;
+            }
+
+            // 逐行读取流式响应
+            try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(responseBody.byteStream(), "UTF-8"))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    // 过滤空行和注释行
+                    if (line.isEmpty() || line.startsWith(":")) {
+                        continue;
+                    }
+
+                    // 分割 SSE 行：格式为 "字段名: 内容"
+                    String[] parts = line.split(":", 2);
+                    if (parts.length < 2) {
+                        continue; // 无效的 SSE 行，跳过
+                    }
+
+                    String field = parts[0].trim(); // 字段名
+                    String fieldContent = parts[1].trim(); // 字段内容
+
+                    // 处理 content 字段（核心 JSON 数据）
+                    if ("content".equals(field)) {
+                        try {
+                            JSONObject contentObj = JSONObject.parseObject(fieldContent);
+                            // 获取id和output
+                            String contentId = contentObj.getString("id");
+                            String output = contentObj.getString("output");
+
+                            // 如果id匹配，则设置categoryCode
+                            if (id.equals(contentId) && output != null) {
+                                vo.setCategoryCode(output);
+                                System.out.println("分类结果 - ID: " + contentId + ", 分类编码: " + output);
+                            }
+                        } catch (Exception e) {
+                            System.err.println("解析JSON失败: " + fieldContent);
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
         }
 
-        return "null";
+        return vo;
     }
 
     /**
@@ -70,7 +154,7 @@ public class CozeApiClient {
 
         // 2. 构建请求
         Request request = new Request.Builder()
-            .url(API_URL)
+            .url(CHAT_API_URL)
             .post(RequestBody.create(MediaType.parse("application/json; charset=utf-8"), requestBody.toJSONString()))
             .addHeader("Authorization", "Bearer " + TOKEN)
             .addHeader("Content-Type", "application/json")
