@@ -22,7 +22,7 @@ public class CategoryMessageVO implements Serializable {
     /**
      * 是否AI分类
      */
-    private Boolean isAiClassified;
+    private Integer isAiClassified;
 
     /**
      * AI分类时间

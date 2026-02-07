@@ -45,8 +45,9 @@ public class CozeApiClient {
         // 创建返回对象
         CategoryMessageVO vo = new CategoryMessageVO();
         vo.setId(Integer.parseInt(id));
-        vo.setIsAiClassified(true);
+        vo.setIsAiClassified(1);
         vo.setAiClassifyTime(new Date());
+        vo.setCategoryCode("99");  //初始默认字符99
 
         // 1. 构建请求体 JSON 数据
         JSONObject requestBody = new JSONObject();
@@ -101,22 +102,26 @@ public class CozeApiClient {
                     String field = parts[0].trim(); // 字段名
                     String fieldContent = parts[1].trim(); // 字段内容
 
-                    // 处理 content 字段（核心 JSON 数据）
-                    if ("content".equals(field)) {
+                    // 处理 data 字段（核心 JSON 数据）
+                    if ("data".equals(field)) {
                         try {
-                            JSONObject contentObj = JSONObject.parseObject(fieldContent);
-                            // 获取id和output
-                            String contentId = contentObj.getString("id");
-                            String output = contentObj.getString("output");
+                            JSONObject dataObj = JSONObject.parseObject(fieldContent);
+                            String contentStr = dataObj.getString("content");
 
-                            // 如果id匹配，则设置categoryCode
-                            if (id.equals(contentId) && output != null) {
-                                vo.setCategoryCode(output);
-                                System.out.println("分类结果 - ID: " + contentId + ", 分类编码: " + output);
+                            if (contentStr != null) {
+                                JSONObject contentObj = JSONObject.parseObject(contentStr);
+                                // 获取id和output
+                                String contentId = contentObj.getString("id");
+                                String output = contentObj.getString("output");
+
+                                // 如果id匹配，则设置categoryCode
+                                if (id.equals(contentId) && output != null && !"error".equals(output)) {
+                                    vo.setCategoryCode(output);
+                                    System.out.println("项目ID: " + contentId + ", 分类编码: " + output);
+                                }
                             }
                         } catch (Exception e) {
-                            System.err.println("解析JSON失败: " + fieldContent);
-                            e.printStackTrace();
+                            // 静默处理异常，不打印错误信息
                         }
                     }
                 }
