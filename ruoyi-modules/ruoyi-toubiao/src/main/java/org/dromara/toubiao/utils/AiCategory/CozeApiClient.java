@@ -120,7 +120,7 @@ public class CozeApiClient {
                                 // 如果id匹配，则设置categoryCode
                                 if (id.equals(contentId) && output != null && !"error".equals(output)) {
                                     // 只有当output是单个字符数字时才进行赋值
-                                    if (output.matches("^\\\\d{1,2}$")) { // 匹配1-2位数字
+                                    if (output.matches("^\\d+$") && !output.contains("、") && !output.matches(".*[\\u4e00-\\u9fa5].*")) { // 匹配连续数字，不包含分隔符和中文
                                         vo.setCategoryCode(output);
                                         System.out.println("项目ID: " + contentId + ", 分类编码: " + output);
                                     } else {
