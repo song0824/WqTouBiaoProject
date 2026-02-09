@@ -40,6 +40,7 @@
         <result column="parse_error_msg" property="parseErrorMsg" />
         <result column="is_ai_classified" property="isAiClassified" />
         <result column="ai_classify_time" property="aiClassifyTime" />
+        <result column="category_code" property="categoryCode" />
         <result column="created_time" property="createdTime" />
         <result column="updated_time" property="updatedTime" />
     </resultMap>
@@ -88,5 +89,15 @@
         FROM tender_project_detail_parsed
         WHERE is_ai_classified = 0;
     </select>
+
+    <!-- 更新AI分类相关字段 -->
+    <update id="updateAiCategoryInfo">
+        UPDATE tender_project_detail_parsed
+        SET is_ai_classified = #{isAiClassified},
+            ai_classify_time = #{aiClassifyTime},
+            category_code = #{categoryCode},
+            updated_time = NOW()
+        WHERE id = #{id}
+    </update>
 
 </mapper>

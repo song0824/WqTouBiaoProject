@@ -8,6 +8,7 @@ import org.dromara.toubiao.domain.CategoryMessage;
 import org.dromara.toubiao.domain.TenderProjectDetailParsed;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -31,8 +32,8 @@ public interface TenderProjectDetailParsedMapper extends BaseMapper<TenderProjec
      * @return 分页结果
      */
     @InterceptorIgnore(tenantLine = "true")  // 忽略多租户
-    IPage<TenderProjectDetailParsed> selectPageList(IPage<TenderProjectDetailParsed> page, 
-                                                     @Param("position") String position, 
+    IPage<TenderProjectDetailParsed> selectPageList(IPage<TenderProjectDetailParsed> page,
+                                                     @Param("position") String position,
                                                      @Param("title") String title);
 
     /**
@@ -49,5 +50,19 @@ public interface TenderProjectDetailParsedMapper extends BaseMapper<TenderProjec
      */
     @InterceptorIgnore(tenantLine = "true")  // 忽略多租户,否则数据库表要加一个tender_id字段，这是mybatisplus的代理，在MybatisPlusConfig中配置
     List<CategoryMessage> selectCategoryMessage();
+
+    /**
+     * 更新AI分类相关字段
+     * @param id 项目ID
+     * @param isAiClassified 是否已AI分类
+     * @param aiClassifyTime AI分类时间
+     * @param categoryCode 分类编码
+     * @return 更新结果
+     */
+    @InterceptorIgnore(tenantLine = "true")
+    int updateAiCategoryInfo(@Param("id") Integer id,
+                            @Param("isAiClassified") Integer isAiClassified,
+                            @Param("aiClassifyTime") LocalDateTime aiClassifyTime,
+                            @Param("categoryCode") String categoryCode);
 
 }

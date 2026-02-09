@@ -46,7 +46,7 @@ public class CozeApiClient {
         CategoryMessageVO vo = new CategoryMessageVO();
         vo.setId(Integer.parseInt(id));
         vo.setIsAiClassified(1);
-        vo.setAiClassifyTime(new Date());
+//        vo.setAiClassifyTime(new Date());
         vo.setCategoryCode("99");  //初始默认字符99
 
         // 1. 构建请求体 JSON 数据
@@ -69,6 +69,9 @@ public class CozeApiClient {
             .addHeader("Authorization", "Bearer " + TOKEN)
             .addHeader("Content-Type", "application/json")
             .build();
+
+        // 记录请求发送时间
+        long startTime = System.currentTimeMillis();
 
         // 3. 发送请求并处理流式响应
         try (Response response = client.newCall(request).execute()) {
@@ -116,8 +119,13 @@ public class CozeApiClient {
 
                                 // 如果id匹配，则设置categoryCode
                                 if (id.equals(contentId) && output != null && !"error".equals(output)) {
-                                    vo.setCategoryCode(output);
-                                    System.out.println("项目ID: " + contentId + ", 分类编码: " + output);
+                                    // 只有当output是单个字符数字时才进行赋值
+                                    if (output.matches("^\\\\d{1,2}$")) { // 匹配1-2位数字
+                                        vo.setCategoryCode(output);
+                                        System.out.println("项目ID: " + contentId + ", 分类编码: " + output);
+                                    } else {
+                                        System.out.println("项目ID: " + contentId + ", 无效的分类编码: " + output + "，不进行赋值,默认99");
+                                    }
                                 }
                             }
                         } catch (Exception e) {
@@ -127,6 +135,14 @@ public class CozeApiClient {
                 }
             }
         }
+
+        // 记录结束时间并计算总耗时
+        long endTime = System.currentTimeMillis();
+        double totalTimeSeconds = (endTime - startTime) / 1000.0;
+
+        System.out.println("分类完成，项目ID: " + id +
+                         "，分类编码: " + vo.getCategoryCode() +
+                         "，总分类耗时: " + String.format("%.3f", totalTimeSeconds) + "s");
 
         return vo;
     }

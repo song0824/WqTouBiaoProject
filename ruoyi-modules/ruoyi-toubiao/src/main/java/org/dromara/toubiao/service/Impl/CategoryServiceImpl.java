@@ -2,13 +2,18 @@ package org.dromara.toubiao.service.Impl;
 
 import org.dromara.toubiao.domain.CategoryMessage;
 import org.dromara.toubiao.domain.CategoryMessageVO;
+import org.dromara.toubiao.domain.TenderProjectDetailParsed;
 import org.dromara.toubiao.mapper.TenderProjectDetailParsedMapper;
 import org.dromara.toubiao.service.CategoryService;
+import org.dromara.toubiao.service.CategoryUpdateService;
 import org.dromara.toubiao.utils.AiCategory.CozeApiClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,16 +31,18 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     TenderProjectDetailParsedMapper tenderProjectDetailParsedMapper;
 
+    @Autowired
+    CategoryUpdateService categoryUpdateService;
+
     @Override
     /**
      * 执行项目分类的方法
      * 该方法获取所有项目信息，并通过工作流对每个项目进行分类处理
      */
+//    @Transactional
     public void Category() {
         // 获取所有项目分类信息
         List<CategoryMessage> categoryMessage = getCategoryMessage();
-        // 用于存储分类结果的列表
-        List<CategoryMessageVO> result = new ArrayList<>();
         // 遍历每个项目信息进行分类处理
         for (CategoryMessage message : categoryMessage) {
             try {
@@ -46,10 +53,10 @@ public class CategoryServiceImpl implements CategoryService {
                     message.getProname(),               // 项目名称
                     message.getSectionProjectNeed()      // 项目需求
                 );
-                // 将分类结果添加到结果列表中
-                result.add(vo);
-                // 输出分类成功的项目信息
-//                System.out.println("项目ID: " + message.getId() + ", 分类编码: " + vo.getCategoryCode());
+
+                // 执行更新操作
+                categoryUpdateService.updateCategoryInfo(message.getId(), vo);
+
             } catch (IOException e) {
                 // 输出分类失败的错误信息
                 System.err.println("项目ID: " + message.getId() + " 分类失败: " + e.getMessage());
@@ -57,11 +64,11 @@ public class CategoryServiceImpl implements CategoryService {
                 e.printStackTrace();
             }
         }
-
     }
 
     @Override
     public List<CategoryMessage> getCategoryMessage() {
         return tenderProjectDetailParsedMapper.selectCategoryMessage();
     }
+
 }
