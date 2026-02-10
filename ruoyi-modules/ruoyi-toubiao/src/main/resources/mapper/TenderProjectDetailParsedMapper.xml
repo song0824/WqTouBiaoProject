@@ -40,6 +40,7 @@
         <result column="parse_error_msg" property="parseErrorMsg" />
         <result column="is_ai_classified" property="isAiClassified" />
         <result column="ai_classify_time" property="aiClassifyTime" />
+        <result column="category_code" property="categoryCode" />
         <result column="created_time" property="createdTime" />
         <result column="updated_time" property="updatedTime" />
     </resultMap>
@@ -47,13 +48,24 @@
     <!-- 查询所有数据 -->
     <select id="selectAll" resultMap="BaseResultMap">
         SELECT * FROM tender_project_detail_parsed
-        --ORDER BY created_time DESC
+        ORDER BY created_time DESC
     </select>
 
     <!-- 分页查询 -->
     <select id="selectPageList" resultMap="BaseResultMap">
         SELECT * FROM tender_project_detail_parsed
-        --ORDER BY created_time DESC
+        <where>
+            <if test="position != null and position != ''">
+                AND area LIKE CONCAT('%', #{position}, '%')
+            </if>
+            <if test="title != null and title != ''">
+                AND proname LIKE CONCAT('%', #{title}, '%')
+            </if>
+            <if test="categoryCode != null and categoryCode != ''">
+                AND category_code = #{categoryCode}
+            </if>
+        </where>
+        ORDER BY created_time DESC
     </select>
 
     <!-- 根据ID查询 -->
@@ -62,5 +74,33 @@
         WHERE id = #{id}
     </select>
 
+    <!-- CategoryMessage ResultMap -->
+    <resultMap id="CategoryMessageResultMap" type="org.dromara.toubiao.domain.CategoryMessage">
+        <id column="id" property="id" />
+        <result column="proname" property="proname" />
+        <result column="section_project_need" property="sectionProjectNeed" />
+        <result column="section_project_overview" property="sectionProjectOverview" />
+    </resultMap>
+
+    <!-- 查询分类信息 -->
+    <select id="selectCategoryMessage" resultMap="CategoryMessageResultMap">
+        SELECT
+            id,
+            proname,
+            section_project_need,
+            section_project_overview
+        FROM tender_project_detail_parsed
+        WHERE is_ai_classified = 0;
+    </select>
+
+    <!-- 更新AI分类相关字段 -->
+    <update id="updateAiCategoryInfo">
+        UPDATE tender_project_detail_parsed
+        SET is_ai_classified = #{isAiClassified},
+            ai_classify_time = #{aiClassifyTime},
+            category_code = #{categoryCode},
+            updated_time = NOW()
+        WHERE id = #{id}
+    </update>
 
 </mapper>

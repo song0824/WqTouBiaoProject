@@ -46,14 +46,20 @@ public class TenderProjectDetailParsedController {
      *
      * @param pageNum 当前页码，默认为1
      * @param pageSize 每页大小，默认为10
+     * @param position 职位名称，可为空
+     * @param title 标题，可为空
+     * @param code 分类代码，可为空
      */
     //@SaIgnore
     @GetMapping("/page")
     public R<Map<String, Object>> getPage(
         @RequestParam(defaultValue = "1") Integer pageNum,
-        @RequestParam(defaultValue = "10") Integer pageSize) {
+        @RequestParam(defaultValue = "10") Integer pageSize,
+        @RequestParam(required = false) String position,
+        @RequestParam(required = false) String title ,
+        @RequestParam(required = false) String code){
         try {
-            IPage<TenderProjectDetailParsed> page = tenderProjectDetailParsedService.getPage(pageNum, pageSize);
+            IPage<TenderProjectDetailParsed> page = tenderProjectDetailParsedService.getPage(pageNum, pageSize, position, title, code);
 
             Map<String, Object> result = new HashMap<>();
             result.put("current", page.getCurrent());

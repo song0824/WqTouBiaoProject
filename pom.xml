@@ -118,7 +118,7 @@
                 <scope>import</scope>
             </dependency>
 
-            <!-- common 的依赖配置-->
+<!--             common 的依赖配置-->
             <dependency>
                 <groupId>org.dromara</groupId>
                 <artifactId>ruoyi-common-bom</artifactId>
@@ -126,6 +126,8 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+
 
             <dependency>
                 <groupId>org.springdoc</groupId>

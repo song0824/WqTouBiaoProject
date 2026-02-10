@@ -25,20 +25,20 @@ public class GetMessageService {
 
 
     @Transactional
-     public String WriteToDataBase() {
+    public String WriteToDataBase() {
 
 
-         List<TenderProjectDetail> tenderProjectDetails = getMessage.getTenderProjectList();
+        List<TenderProjectDetail> tenderProjectDetails = getMessage.getTenderProjectList();
 
-         System.out.println(tenderProjectDetails);
+        System.out.println(tenderProjectDetails);
 
-         int count = getMessageMapper.insertIntoTenderProjectList(tenderProjectDetails);
-         if(count>0){
-             // 打印获取到的项目详情
+        int count = getMessageMapper.insertIntoTenderProjectList(tenderProjectDetails);
+        if(count>0){
+            // 打印获取到的项目详情
 //             System.out.println(tenderProjectDetails);
-             return "ok";
-         }
-         return "false";
+            return "ok";
+        }
+        return "false";
 
     }
 

@@ -220,6 +220,11 @@ public class TenderProjectDetailParsed implements Serializable {
      */
     private LocalDateTime aiClassifyTime;
 
+    /**
+     * 分类编码
+     */
+    private String categoryCode;
+
     // ==================== 时间戳 ====================
     /**
      * 创建时间
