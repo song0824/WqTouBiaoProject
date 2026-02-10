@@ -61,6 +61,9 @@
             <if test="title != null and title != ''">
                 AND proname LIKE CONCAT('%', #{title}, '%')
             </if>
+            <if test="categoryCode != null and categoryCode != ''">
+                AND category_code = #{categoryCode}
+            </if>
         </where>
         ORDER BY created_time DESC
     </select>

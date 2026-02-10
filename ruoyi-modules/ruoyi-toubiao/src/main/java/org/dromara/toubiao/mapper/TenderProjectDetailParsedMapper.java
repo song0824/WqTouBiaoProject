@@ -34,7 +34,8 @@ public interface TenderProjectDetailParsedMapper extends BaseMapper<TenderProjec
     @InterceptorIgnore(tenantLine = "true")  // 忽略多租户
     IPage<TenderProjectDetailParsed> selectPageList(IPage<TenderProjectDetailParsed> page,
                                                      @Param("position") String position,
-                                                     @Param("title") String title);
+                                                     @Param("title") String title,
+                                                     @Param("categoryCode") String categoryCode);
 
     /**
      * 根据ID查询

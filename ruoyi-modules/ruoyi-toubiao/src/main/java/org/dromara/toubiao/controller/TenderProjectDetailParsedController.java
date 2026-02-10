@@ -55,9 +55,10 @@ public class TenderProjectDetailParsedController {
         @RequestParam(defaultValue = "1") Integer pageNum,
         @RequestParam(defaultValue = "10") Integer pageSize,
         @RequestParam(required = false) String position,
-        @RequestParam(required = false) String title) {
+        @RequestParam(required = false) String title ,
+        @RequestParam(required = false) String code){
         try {
-            IPage<TenderProjectDetailParsed> page = tenderProjectDetailParsedService.getPage(pageNum, pageSize, position, title);
+            IPage<TenderProjectDetailParsed> page = tenderProjectDetailParsedService.getPage(pageNum, pageSize, position, title, code);
 
             Map<String, Object> result = new HashMap<>();
             result.put("current", page.getCurrent());

@@ -37,9 +37,9 @@ public class TenderProjectDetailParsedServiceImpl implements TenderProjectDetail
      * @return 分页结果
      */
     @Override
-    public IPage<TenderProjectDetailParsed> getPage(Integer pageNum, Integer pageSize, String position, String title) {
+    public IPage<TenderProjectDetailParsed> getPage(Integer pageNum, Integer pageSize, String position, String title,String code) {
         Page<TenderProjectDetailParsed> page = new Page<>(pageNum, pageSize);
-        return tenderProjectDetailParsedMapper.selectPageList(page, position, title);
+        return tenderProjectDetailParsedMapper.selectPageList(page, position, title,code);
     }
 
     /**

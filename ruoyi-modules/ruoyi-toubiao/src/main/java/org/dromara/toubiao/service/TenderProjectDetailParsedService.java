@@ -26,7 +26,7 @@ public interface TenderProjectDetailParsedService {
      * @param title 标题，可为空
      * @return 分页结果
      */
-    IPage<TenderProjectDetailParsed> getPage(Integer pageNum, Integer pageSize, String position, String title);
+    IPage<TenderProjectDetailParsed> getPage(Integer pageNum, Integer pageSize, String position, String title,String code);
 
     /**
      * 根据ID查询
