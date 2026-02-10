@@ -48,6 +48,7 @@ public class TenderProjectDetailParsedController {
      * @param pageSize 每页大小，默认为10
      * @param position 职位名称，可为空
      * @param title 标题，可为空
+     * @param code 分类代码，可为空
      */
     //@SaIgnore
     @GetMapping("/page")
