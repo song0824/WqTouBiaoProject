@@ -2,6 +2,7 @@ package org.dromara.toubiao.controller;
 
 
 
+import cn.dev33.satoken.annotation.SaIgnore;
 import org.dromara.toubiao.service.GetMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -20,6 +21,7 @@ public class GetMessageController {
     @Autowired
     private GetMessageService getMessageService;
 
+    @SaIgnore
     @GetMapping("/getData")
     public String getData() {
         return getMessageService.WriteToDataBase();

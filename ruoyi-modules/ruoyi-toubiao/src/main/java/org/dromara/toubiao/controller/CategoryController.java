@@ -31,6 +31,7 @@ public class CategoryController {
     @PostConstruct
     public void init() {
         // 启动时立即执行一次分类任务
+        System.out.println("启动时自动执行分类任务，已开始执行");
         categoryService.Category();
     }
 

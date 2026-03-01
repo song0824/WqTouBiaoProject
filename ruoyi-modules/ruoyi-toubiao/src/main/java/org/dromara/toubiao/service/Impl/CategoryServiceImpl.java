@@ -8,6 +8,7 @@ import org.dromara.toubiao.service.CategoryService;
 import org.dromara.toubiao.service.CategoryUpdateService;
 import org.dromara.toubiao.utils.AiCategory.CozeApiClient;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +39,9 @@ public class CategoryServiceImpl implements CategoryService {
     /**
      * 执行项目分类的方法
      * 该方法获取所有项目信息，并通过工作流对每个项目进行分类处理
+     * 使用@Async注解使该方法异步执行，不会阻塞其他方法的执行
      */
+    @Async
 //    @Transactional
     public void Category() {
         // 获取所有项目分类信息

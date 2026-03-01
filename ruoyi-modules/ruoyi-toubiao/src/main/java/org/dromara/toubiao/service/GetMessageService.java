@@ -30,7 +30,7 @@ public class GetMessageService {
 
         List<TenderProjectDetail> tenderProjectDetails = getMessage.getTenderProjectList();
 
-        System.out.println(tenderProjectDetails);
+//        System.out.println(tenderProjectDetails);
 
         int count = getMessageMapper.insertIntoTenderProjectList(tenderProjectDetails);
         if(count>0){

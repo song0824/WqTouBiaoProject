@@ -19,7 +19,7 @@ public class CozeApiClient {
     // API 基础配置
     private static final String CHAT_API_URL = "https://api.coze.cn/v3/chat";
     private static final String WORKFLOW_API_URL = "https://api.coze.cn/v1/workflow/stream_run";
-    private static final String TOKEN = "pat_Qm71jDfphTDtWeKaMHvIBQ8cAHrN5lh28q1cjLIWuJjJmO99gkjGt80AWkAdHhIP";
+    private static final String TOKEN = "sat_CYEMCwrU3r5qLmPFOpJfft3XugjMuWJAJZpNplYFsyX0xT86K86t6O3mSVM8Q2PQ";
     private static final String BOT_ID = "7597390389269512192";
     private static final String WORKFLOW_ID = "7597392590997356594";
     private static final String USER_ID = "123456789";
