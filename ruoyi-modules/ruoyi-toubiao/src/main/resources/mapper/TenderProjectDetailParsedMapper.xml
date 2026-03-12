@@ -103,4 +103,11 @@
         WHERE id = #{id}
     </update>
 
+    <!--  更新是否已进行分类  -->
+    <update id="updateAiCategory">
+        UPDATE tender_project_detail_parsed
+        SET is_ai_classified = 1, ai_classify_time = NOW()
+        WHERE id = #{id}
+    </update>
+
 </mapper>

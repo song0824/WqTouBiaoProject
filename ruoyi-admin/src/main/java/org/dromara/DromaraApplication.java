@@ -4,6 +4,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.metrics.buffering.BufferingApplicationStartup;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 /**
@@ -14,6 +15,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @MapperScan("org.dromara.toubiao.mapper")
 @SpringBootApplication(scanBasePackages = {"org.dromara"})
 @EnableScheduling
+@EnableAsync
 public class DromaraApplication {
 
     public static void main(String[] args) {

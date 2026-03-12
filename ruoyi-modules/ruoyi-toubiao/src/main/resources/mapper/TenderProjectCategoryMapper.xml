@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.dromara.toubiao.mapper.TenderProjectCategoryMapper">
+
+    <insert id="insertCategroyMessage">
+        insert into tender_project_category (
+        is_classifyed,
+        project_id,
+        code_level1,
+        name_level1,
+        code_level2,
+        name_level2,
+        code_level3,
+        name_level3,
+        created_time,
+        updated_time
+        )
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.isClassifyed},
+            #{item.projectId},
+            #{item.codeLevel1},
+            #{item.nameLevel1},
+            #{item.codeLevel2},
+            #{item.nameLevel2},
+            #{item.codeLevel3},
+            #{item.nameLevel3},
+            NOW(),
+            NOW())
+        </foreach>
+    </insert>
+</mapper>

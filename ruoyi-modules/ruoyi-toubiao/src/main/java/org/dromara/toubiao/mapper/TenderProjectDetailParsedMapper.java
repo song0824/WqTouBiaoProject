@@ -66,4 +66,11 @@ public interface TenderProjectDetailParsedMapper extends BaseMapper<TenderProjec
                             @Param("aiClassifyTime") LocalDateTime aiClassifyTime,
                             @Param("categoryCode") String categoryCode);
 
+    /**
+     * 更新是否已分类
+     * @param projectId
+     * @return 1
+     */
+    @InterceptorIgnore(tenantLine = "true")
+    int updateAiCategory(@Param("id")String projectId);
 }
