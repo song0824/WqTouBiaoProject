@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.ibatis.annotations.Param;
 import org.dromara.toubiao.domain.CategoryMessage;
 import org.dromara.toubiao.domain.TenderProjectDetailParsed;
+import org.dromara.toubiao.domain.TenderProjectDetailParsedVO;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -31,11 +32,34 @@ public interface TenderProjectDetailParsedMapper extends BaseMapper<TenderProjec
      * @param title 标题，可为空
      * @return 分页结果
      */
+
+//    IPage<TenderProjectDetailParsedVO> selectPageList(IPage<TenderProjectDetailParsedVO> page,
+//                                                      @Param("position") String position,
+//                                                      @Param("title") String title,
+//                                                      @Param("categoryCode") String categoryCode);
+    // 无 code
     @InterceptorIgnore(tenantLine = "true")  // 忽略多租户
-    IPage<TenderProjectDetailParsed> selectPageList(IPage<TenderProjectDetailParsed> page,
-                                                     @Param("position") String position,
-                                                     @Param("title") String title,
-                                                     @Param("categoryCode") String categoryCode);
+    IPage<TenderProjectDetailParsedVO> selectPageList(
+        IPage<TenderProjectDetailParsedVO> page,
+        @Param("position") String position,
+        @Param("title") String title
+    );
+
+    @InterceptorIgnore(tenantLine = "true")
+        // 根据分类等级查询去重 project_id
+    List<String> selectProjectIdByLevel(
+        @Param("code") String code,
+        @Param("level") String level
+    );
+
+    // 根据 project_id 列表查询（有 code）
+    @InterceptorIgnore(tenantLine = "true")
+    IPage<TenderProjectDetailParsed> selectPageListByProjectIds(
+        IPage<TenderProjectDetailParsed> page,
+        @Param("position") String position,
+        @Param("title") String title,
+        @Param("projectIdList") List<String> projectIdList
+    );
 
     /**
      * 根据ID查询
@@ -73,4 +97,12 @@ public interface TenderProjectDetailParsedMapper extends BaseMapper<TenderProjec
      */
     @InterceptorIgnore(tenantLine = "true")
     int updateAiCategory(@Param("id")String projectId);
+
+    /**
+     * 是否尝试发送（为空不进行真实发送，但已经尝试发送，置为1）
+     * @param projectId
+     * @return 1
+     */
+    @InterceptorIgnore(tenantLine = "true")
+    void updateIsSend(@Param("id")String projectId);
 }

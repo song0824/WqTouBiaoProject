@@ -3,6 +3,7 @@ package org.dromara.toubiao.service.Impl;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.dromara.toubiao.domain.TenderProjectDetailParsed;
+import org.dromara.toubiao.domain.TenderProjectDetailParsedVO;
 import org.dromara.toubiao.mapper.TenderProjectDetailParsedMapper;
 import org.dromara.toubiao.service.TenderProjectDetailParsedService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,10 +37,38 @@ public class TenderProjectDetailParsedServiceImpl implements TenderProjectDetail
      * @param title 标题，可为空
      * @return 分页结果
      */
+//    @Override
+//    public IPage<TenderProjectDetailParsedVO> getPage(Integer pageNum, Integer pageSize, String position, String title, String code) {
+//        Page<TenderProjectDetailParsedVO> page = new Page<>(pageNum, pageSize);
+//        return tenderProjectDetailParsedMapper.selectPageList(page, position, title,code);
+//    }
     @Override
-    public IPage<TenderProjectDetailParsed> getPage(Integer pageNum, Integer pageSize, String position, String title,String code) {
+    public IPage<TenderProjectDetailParsedVO> getPage(Integer pageNum, Integer pageSize,
+                                                      String position, String title) {
+        Page<TenderProjectDetailParsedVO> page = new Page<>(pageNum, pageSize);
+        return tenderProjectDetailParsedMapper.selectPageList(page, position, title);
+    }
+
+    @Override
+    public IPage<TenderProjectDetailParsed> getPageByCode(Integer pageNum, Integer pageSize,
+                                                          String position, String title, String code) {
+        // 1. 按 code 位数判断
+        List<String> projectIdList = null;
+        if (code != null && !code.isEmpty()) {
+            int len = code.length();
+            if (len >= 1 && len <= 2) {
+                projectIdList = tenderProjectDetailParsedMapper.selectProjectIdByLevel(code, "level1");
+            } else if (len == 4) {
+                projectIdList = tenderProjectDetailParsedMapper.selectProjectIdByLevel(code, "level2");
+            } else if (len > 4) {
+                projectIdList = tenderProjectDetailParsedMapper.selectProjectIdByLevel(code, "level3");
+            }
+        }
+
+        // 2. 分页查询主表
         Page<TenderProjectDetailParsed> page = new Page<>(pageNum, pageSize);
-        return tenderProjectDetailParsedMapper.selectPageList(page, position, title,code);
+        return tenderProjectDetailParsedMapper.selectPageListByProjectIds(
+            page, position, title, projectIdList);
     }
 
     /**

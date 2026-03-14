@@ -88,8 +88,10 @@ public class CategoryServiceImpl implements CategoryService {
      */
     private void processMessage(CategoryMessage message) {
         String projectId = String.valueOf(message.getId());
-        try {
+        //只要读取准备调api则把is_send字段修改成1（是否尝试发送）
+        tenderProjectDetailParsedMapper.updateIsSend(projectId);
 
+        try {
             // ===================== 非空校验：任意字段为null，直接跳过 =====================
             String overview = message.getSectionProjectOverview();
             String proname = message.getProname();
@@ -109,6 +111,7 @@ public class CategoryServiceImpl implements CategoryService {
             );
 
             // ===================== 批量保存到数据库 =====================
+            //若dtolist为空，则说明没有匹配的分类，不更新is_ai_classify
             if (dtoList != null && !dtoList.isEmpty()) {
                 categoryUpdateService.insertAndUpdateCategoryInfo(dtoList);
                 log.info("项目{} 保存成功，共{}条分类", projectId, dtoList.size());

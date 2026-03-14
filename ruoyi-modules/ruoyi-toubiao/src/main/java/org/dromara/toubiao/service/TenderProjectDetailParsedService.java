@@ -2,6 +2,7 @@ package org.dromara.toubiao.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.dromara.toubiao.domain.TenderProjectDetailParsed;
+import org.dromara.toubiao.domain.TenderProjectDetailParsedVO;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,8 +27,14 @@ public interface TenderProjectDetailParsedService {
      * @param title 标题，可为空
      * @return 分页结果
      */
-    IPage<TenderProjectDetailParsed> getPage(Integer pageNum, Integer pageSize, String position, String title,String code);
+//    IPage<TenderProjectDetailParsedVO> getPage(Integer pageNum, Integer pageSize, String position, String title, String code);
+// 无 code：返回 VO
+    IPage<TenderProjectDetailParsedVO> getPage(Integer pageNum, Integer pageSize,
+                                               String position, String title);
 
+    // 有 code：返回 实体
+    IPage<TenderProjectDetailParsed> getPageByCode(Integer pageNum, Integer pageSize,
+                                                   String position, String title, String code);
     /**
      * 根据ID查询
      * @param id 主键ID

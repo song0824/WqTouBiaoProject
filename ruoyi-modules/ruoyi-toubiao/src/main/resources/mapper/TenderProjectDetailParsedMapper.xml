@@ -52,21 +52,243 @@
     </select>
 
     <!-- 分页查询 -->
-    <select id="selectPageList" resultMap="BaseResultMap">
-        SELECT * FROM tender_project_detail_parsed
+<!--    <select id="selectPageList" resultMap="BaseResultMap">-->
+<!--        SELECT * FROM tender_project_detail_parsed-->
+<!--        <where>-->
+<!--            <if test="position != null and position != ''">-->
+<!--                AND area LIKE CONCAT('%', #{position}, '%')-->
+<!--            </if>-->
+<!--            <if test="title != null and title != ''">-->
+<!--                AND proname LIKE CONCAT('%', #{title}, '%')-->
+<!--            </if>-->
+<!--            <if test="categoryCode != null and categoryCode != ''">-->
+<!--                AND category_code = #{categoryCode}-->
+<!--            </if>-->
+<!--        </where>-->
+<!--        ORDER BY created_time DESC-->
+<!--    </select>-->
+    <!-- 分类表结果映射 -->
+<!--    <resultMap id="CategoryResultMap" type="org.dromara.toubiao.domain.CategoryMessageDTO">-->
+<!--        <id column="cat_id" property="id"/>-->
+<!--        <result column="project_id" property="projectId"/>-->
+<!--        <result column="code_level1" property="codeLevel1"/>-->
+<!--        <result column="name_level1" property="nameLevel1"/>-->
+<!--        <result column="code_level2" property="codeLevel2"/>-->
+<!--        <result column="name_level2" property="nameLevel2"/>-->
+<!--        <result column="code_level3" property="codeLevel3"/>-->
+<!--        <result column="name_level3" property="nameLevel3"/>-->
+<!--        <result column="cat_created_time" property="createdTime"/>-->
+<!--        <result column="cat_updated_time" property="updatedTime"/>-->
+<!--        <result column="is_classifyed" property="isClassifyed"/>-->
+<!--    </resultMap>-->
+
+<!--    &lt;!&ndash; 改造后主表结果映射：标签顺序严格：id → result → collection &ndash;&gt;-->
+<!--    <resultMap id="BaseResultMap2" type="org.dromara.toubiao.domain.TenderProjectDetailParsedVO">-->
+<!--        <id column="id" property="id"/>-->
+<!--        <result column="infoid" property="infoid"/>-->
+<!--        <result column="info_url" property="infoUrl"/>-->
+<!--        <result column="prono" property="prono"/>-->
+<!--        <result column="proname" property="proname"/>-->
+<!--        <result column="budget_amount" property="budgetAmount"/>-->
+<!--        <result column="tender_method" property="tenderMethod"/>-->
+<!--        <result column="area" property="area"/>-->
+<!--        <result column="publish_time" property="publishTime"/>-->
+<!--        <result column="doc_start_time" property="docStartTime"/>-->
+<!--        <result column="doc_end_time" property="docEndTime"/>-->
+<!--        <result column="bidding_deadline" property="biddingDeadline"/>-->
+<!--        <result column="kaibiaodate" property="kaibiaodate"/>-->
+<!--        <result column="changdi" property="changdi"/>-->
+<!--        <result column="purchaser" property="purchaser"/>-->
+<!--        <result column="purchaser_address" property="purchaserAddress"/>-->
+<!--        <result column="purchaser_phone" property="purchaserPhone"/>-->
+<!--        <result column="agent_company" property="agentCompany"/>-->
+<!--        <result column="agent_address" property="agentAddress"/>-->
+<!--        <result column="agent_phone" property="agentPhone"/>-->
+<!--        <result column="project_contact" property="projectContact"/>-->
+<!--        <result column="project_phone" property="projectPhone"/>-->
+<!--        <result column="section_project_need" property="sectionProjectNeed"/>-->
+<!--        <result column="section_project_overview" property="sectionProjectOverview"/>-->
+<!--        <result column="section_basic_info" property="sectionBasicInfo"/>-->
+<!--        <result column="section_qualification" property="sectionQualification"/>-->
+<!--        <result column="section_doc_acquisition" property="sectionDocAcquisition"/>-->
+<!--        <result column="section_bidding_schedule" property="sectionBiddingSchedule"/>-->
+<!--        <result column="section_announcement_period" property="sectionAnnouncementPeriod"/>-->
+<!--        <result column="section_other_matters" property="sectionOtherMatters"/>-->
+<!--        <result column="section_contact" property="sectionContact"/>-->
+<!--        <result column="parse_status" property="parseStatus"/>-->
+<!--        <result column="parse_time" property="parseTime"/>-->
+<!--        <result column="parse_retry_count" property="parseRetryCount"/>-->
+<!--        <result column="parse_error_msg" property="parseErrorMsg"/>-->
+<!--        <result column="is_ai_classified" property="isAiClassified"/>-->
+<!--        <result column="ai_classify_time" property="aiClassifyTime"/>-->
+<!--        <result column="created_time" property="createdTime"/>-->
+<!--        <result column="updated_time" property="updatedTime"/>-->
+
+<!--        &lt;!&ndash; ===================== 关键修复 ===================== &ndash;&gt;-->
+<!--        &lt;!&ndash; collection 必须放在 所有 result 的最后面！！！ &ndash;&gt;-->
+<!--        <collection property="categoryList" ofType="org.dromara.toubiao.domain.CategoryMessageDTO" resultMap="CategoryResultMap"/>-->
+
+<!--    </resultMap>-->
+<!--    &lt;!&ndash; 分页查询：LEFT JOIN 联表查询 &ndash;&gt;-->
+<!--    <select id="selectPageList" resultMap="BaseResultMap2">-->
+<!--        SELECT-->
+<!--        tpd.*,-->
+<!--        &#45;&#45; 分类表字段别名，避免与主表重名-->
+<!--        tpc.id AS cat_id,-->
+<!--        tpc.project_id,-->
+<!--        tpc.code_level1,-->
+<!--        tpc.name_level1,-->
+<!--        tpc.code_level2,-->
+<!--        tpc.name_level2,-->
+<!--        tpc.code_level3,-->
+<!--        tpc.name_level3,-->
+<!--        tpc.created_time AS cat_created_time,-->
+<!--        tpc.updated_time AS cat_updated_time,-->
+<!--        tpc.is_classifyed-->
+<!--        FROM tender_project_detail_parsed tpd-->
+<!--        &#45;&#45; 左连接：主表数据必返回，无分类则categoryList为空数组-->
+<!--        LEFT JOIN tender_project_category tpc-->
+<!--        ON tpd.id = tpc.project_id-->
+<!--        <where>-->
+<!--            <if test="position != null and position != ''">-->
+<!--                AND tpd.area LIKE CONCAT('%', #{position}, '%')-->
+<!--            </if>-->
+<!--            <if test="title != null and title != ''">-->
+<!--                AND tpd.proname LIKE CONCAT('%', #{title}, '%')-->
+<!--            </if>-->
+<!--        </where>-->
+<!--        ORDER BY tpd.created_time DESC-->
+<!--    </select>-->
+    <!-- 分类对象映射 -->
+    <resultMap id="CategoryResultMap" type="org.dromara.toubiao.domain.CategoryMessageDTO">
+        <id column="cat_id" property="id"/>
+        <result column="project_id" property="projectId"/>
+        <result column="code_level1" property="codeLevel1"/>
+        <result column="name_level1" property="nameLevel1"/>
+        <result column="code_level2" property="codeLevel2"/>
+        <result column="name_level2" property="nameLevel2"/>
+        <result column="code_level3" property="codeLevel3"/>
+        <result column="name_level3" property="nameLevel3"/>
+        <result column="cat_created_time" property="createdTime"/>
+        <result column="cat_updated_time" property="updatedTime"/>
+        <result column="is_classifyed" property="isClassifyed"/>
+    </resultMap>
+
+    <!-- VO 带分类数组 -->
+    <resultMap id="BaseResultMap2" type="org.dromara.toubiao.domain.TenderProjectDetailParsedVO">
+        <id column="id" property="id"/>
+        <result column="infoid" property="infoid"/>
+        <result column="info_url" property="infoUrl"/>
+        <result column="prono" property="prono"/>
+        <result column="proname" property="proname"/>
+        <result column="budget_amount" property="budgetAmount"/>
+        <result column="tender_method" property="tenderMethod"/>
+        <result column="area" property="area"/>
+        <result column="publish_time" property="publishTime"/>
+        <result column="doc_start_time" property="docStartTime"/>
+        <result column="doc_end_time" property="docEndTime"/>
+        <result column="bidding_deadline" property="biddingDeadline"/>
+        <result column="kaibiaodate" property="kaibiaodate"/>
+        <result column="changdi" property="changdi"/>
+        <result column="purchaser" property="purchaser"/>
+        <result column="purchaser_address" property="purchaserAddress"/>
+        <result column="purchaser_phone" property="purchaserPhone"/>
+        <result column="agent_company" property="agentCompany"/>
+        <result column="agent_address" property="agentAddress"/>
+        <result column="agent_phone" property="agentPhone"/>
+        <result column="project_contact" property="projectContact"/>
+        <result column="project_phone" property="projectPhone"/>
+        <result column="section_project_need" property="sectionProjectNeed"/>
+        <result column="section_project_overview" property="sectionProjectOverview"/>
+        <result column="section_basic_info" property="sectionBasicInfo"/>
+        <result column="section_qualification" property="sectionQualification"/>
+        <result column="section_doc_acquisition" property="sectionDocAcquisition"/>
+        <result column="section_bidding_schedule" property="sectionBiddingSchedule"/>
+        <result column="section_announcement_period" property="sectionAnnouncementPeriod"/>
+        <result column="section_other_matters" property="sectionOtherMatters"/>
+        <result column="section_contact" property="sectionContact"/>
+        <result column="parse_status" property="parseStatus"/>
+        <result column="parse_time" property="parseTime"/>
+        <result column="parse_retry_count" property="parseRetryCount"/>
+        <result column="parse_error_msg" property="parseErrorMsg"/>
+        <result column="is_ai_classified" property="isAiClassified"/>
+        <result column="ai_classify_time" property="aiClassifyTime"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="updated_time" property="updatedTime"/>
+
+        <collection property="categoryList"
+                    ofType="org.dromara.toubiao.domain.CategoryMessageDTO"
+                    resultMap="CategoryResultMap"/>
+    </resultMap>
+
+    <!-- 1. 无 code 查询（返回VO） -->
+    <select id="selectPageList" resultMap="BaseResultMap2">
+        SELECT
+        tpd.*,
+        tpc.id AS cat_id,
+        tpc.project_id,
+        tpc.code_level1,
+        tpc.name_level1,
+        tpc.code_level2,
+        tpc.name_level2,
+        tpc.code_level3,
+        tpc.name_level3,
+        tpc.created_time AS cat_created_time,
+        tpc.updated_time AS cat_updated_time,
+        tpc.is_classifyed
+        FROM tender_project_detail_parsed tpd
+        LEFT JOIN tender_project_category tpc ON tpd.id = tpc.project_id
         <where>
             <if test="position != null and position != ''">
-                AND area LIKE CONCAT('%', #{position}, '%')
+                AND tpd.area LIKE CONCAT('%', #{position}, '%')
             </if>
             <if test="title != null and title != ''">
-                AND proname LIKE CONCAT('%', #{title}, '%')
-            </if>
-            <if test="categoryCode != null and categoryCode != ''">
-                AND category_code = #{categoryCode}
+                AND tpd.proname LIKE CONCAT('%', #{title}, '%')
             </if>
         </where>
+        ORDER BY tpd.created_time DESC
+    </select>
+
+    <!-- 2. 根据等级查询去重 project_id -->
+    <select id="selectProjectIdByLevel" resultType="java.lang.String">
+        SELECT DISTINCT project_id,created_time
+        FROM tender_project_category
+        WHERE 1=1
+        <if test="level == 'level1'">
+            AND code_level1 = #{code}
+        </if>
+        <if test="level == 'level2'">
+            AND code_level2 = #{code}
+        </if>
+        <if test="level == 'level3'">
+            AND code_level3 = #{code}
+        </if>
         ORDER BY created_time DESC
     </select>
+
+    <!-- 3. 根据 project_id 查询（返回实体，无VO） -->
+    <select id="selectPageListByProjectIds" resultType="org.dromara.toubiao.domain.TenderProjectDetailParsed">
+        SELECT *
+        FROM tender_project_detail_parsed tpd
+        <where>
+            <if test="position != null and position != ''">
+                AND tpd.area LIKE CONCAT('%', #{position}, '%')
+            </if>
+            <if test="title != null and title != ''">
+                AND tpd.proname LIKE CONCAT('%', #{title}, '%')
+            </if>
+            <if test="projectIdList != null and projectIdList.size > 0">
+                AND tpd.id IN
+                <foreach collection="projectIdList" item="pid" open="(" separator="," close=")">
+                    #{pid}
+                </foreach>
+            </if>
+        </where>
+        ORDER BY tpd.created_time DESC
+    </select>
+
+
+
 
     <!-- 根据ID查询 -->
     <select id="selectById" resultMap="BaseResultMap">
@@ -90,7 +312,7 @@
             section_project_need,
             section_project_overview
         FROM tender_project_detail_parsed
-        WHERE is_ai_classified = 0;
+        WHERE is_send = 0;
     </select>
 
     <!-- 更新AI分类相关字段 -->
@@ -107,6 +329,11 @@
     <update id="updateAiCategory">
         UPDATE tender_project_detail_parsed
         SET is_ai_classified = 1, ai_classify_time = NOW()
+        WHERE id = #{id}
+    </update>
+    <update id="updateIsSend">
+        UPDATE tender_project_detail_parsed
+        SET is_send = 1
         WHERE id = #{id}
     </update>
 

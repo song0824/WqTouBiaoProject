@@ -37,9 +37,9 @@ public class CategoryUpdateServiceImpl implements CategoryUpdateService {
     @Override
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     public void insertAndUpdateCategoryInfo(List<CategoryMessageDTO> list) {
-        //1更新tender_project_detail_parsed表的is_ai_classified字段为1
+        //1.更新tender_project_detail_parsed表的is_ai_classified字段为1
         tenderProjectDetailParsedMapper.updateAiCategory(list.get(0).getProjectId());
-        //2插入tender_project_category表
+        //2.插入tender_project_category表
         tenderProjectCategoryMapper.insertCategroyMessage(list);
 
     }

@@ -36,10 +36,10 @@ public class CategoryController {
      */
     @EventListener(ApplicationReadyEvent.class)
     public void runAfterStartup() {
-        System.out.println("✅ 项目启动完成，延迟10秒后开始执行AI分类任务...");
+        System.out.println("✅ 项目启动完成，延迟5秒后开始执行AI分类任务...");
         try {
             // 延迟10秒执行（确保数据库、HTTP、配置全部就绪）
-            Thread.sleep(10000);
+            Thread.sleep(5000);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
