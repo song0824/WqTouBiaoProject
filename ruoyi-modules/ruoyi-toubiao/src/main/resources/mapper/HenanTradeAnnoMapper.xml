@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.henan.toubiao.mapper.HenanTradeAnnoMapper">
+
+    <insert id="batchInsert">
+        INSERT INTO henan_trade_anno (id, anno_type, title, content, trade_region, trade_region_code,
+            project_name, project_type, project_code, create_time, info_url)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id}, #{item.annoType}, #{item.title}, #{item.content}, #{item.tradeRegion}, #{item.tradeRegionCode},
+            #{item.projectName}, #{item.projectType}, #{item.projectCode}, #{item.createTime}, #{item.infoUrl})
+        </foreach>
+    </insert>
+
+    <select id="countById" resultType="int">
+        SELECT COUNT(*) FROM henan_trade_anno WHERE id = #{id}
+    </select>
+</mapper>

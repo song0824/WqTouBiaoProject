@@ -1,0 +1,56 @@
+package org.hebei.toubiao.service.Impl;
+
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.hebei.toubiao.domain.TenderProjectDetailParsed;
+import org.hebei.toubiao.mapper.TenderProjectDetailParsedMapper;
+import org.hebei.toubiao.service.TenderProjectDetailParsedService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+/**
+ * 招标项目解析详情 Service实现
+ */
+@Service
+public class TenderProjectDetailParsedServiceImpl implements TenderProjectDetailParsedService {
+
+    @Autowired
+    private TenderProjectDetailParsedMapper tenderProjectDetailParsedMapper;
+
+    /**
+     * 查询所有数据
+     * @return 所有解析详情列表
+     */
+    @Override
+    public List<TenderProjectDetailParsed> getAll() {
+        return tenderProjectDetailParsedMapper.selectAll();
+    }
+
+    /**
+     * 分页查询
+     * @param pageNum 当前页码
+     * @param pageSize 每页大小
+     * @param position 职位名称，可为空
+     * @param title 标题，可为空
+     * @return 分页结果
+     */
+    @Override
+    public IPage<TenderProjectDetailParsed> getPage(Integer pageNum, Integer pageSize, String position, String title,String code) {
+        Page<TenderProjectDetailParsed> page = new Page<>(pageNum, pageSize);
+        return tenderProjectDetailParsedMapper.selectPageList(page, position, title,code);
+    }
+
+    /**
+     * 根据ID查询
+     * @param id 主键ID
+     * @return 解析详情
+     */
+    @Override
+    public TenderProjectDetailParsed getById(Integer id) {
+        return tenderProjectDetailParsedMapper.selectById(id);
+    }
+
+
+}

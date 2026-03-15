@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="org.dromara.toubiao.mapper.GetMessageMapper">
+<mapper namespace="org.hebei.toubiao.mapper.GetMessageMapper">
 
     <insert id="insertIntoTenderProjectList">
         insert into tender_project_detail(area, changdi, infoid, kaibiaodate, proname, prono)
@@ -11,7 +11,7 @@
         </foreach>
     </insert>
 
-    <select id="selectMissingInfoUrlList" resultType="org.dromara.toubiao.domain.TenderProjectDetail">
+    <select id="selectMissingInfoUrlList" resultType="org.hebei.toubiao.domain.TenderProjectDetail">
         SELECT
             infoid,
             info_url as infoUrl
@@ -53,7 +53,7 @@
     </select>
 
     <!-- 查询待解析记录（bak为null） -->
-    <select id="selectUnparsedListOnlyS" resultType="org.dromara.toubiao.domain.TenderProjectDetail">
+    <select id="selectUnparsedListOnlyS" resultType="org.hebei.toubiao.domain.TenderProjectDetail">
         SELECT t.id, t.infoid, t.info_url, t.proname, t.prono, t.area, t.kaibiaodate, t.bak
         FROM tender_project_detail t
         WHERE t.info_url IS NOT NULL
@@ -71,7 +71,7 @@
     </update>
 
     <!-- 根据infoid查询记录 -->
-    <select id="selectByInfoId" resultType="org.dromara.toubiao.domain.TenderProjectDetail">
+    <select id="selectByInfoId" resultType="org.hebei.toubiao.domain.TenderProjectDetail">
         SELECT t.id, t.infoid, t.info_url, t.proname, t.prono, t.area, t.kaibiaodate, t.bak
         FROM tender_project_detail t
         WHERE t.infoid = #{infoid}
@@ -102,7 +102,7 @@
     </update>
 
     <!-- 查询成功记录 -->
-    <select id="selectSuccessRecords" resultType="org.dromara.toubiao.domain.TenderProjectDetail">
+    <select id="selectSuccessRecords" resultType="org.hebei.toubiao.domain.TenderProjectDetail">
         SELECT t.id, t.infoid, t.info_url, t.proname, t.prono, t.area, t.kaibiaodate, t.bak
         FROM tender_project_detail t
         WHERE t.bak = '1'

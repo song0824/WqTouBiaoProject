@@ -2,7 +2,7 @@ package org.dromara.test;
 
 
 import org.dromara.DromaraApplication;
-import org.dromara.toubiao.service.CategoryService;
+import org.hebei.toubiao.service.CategoryService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

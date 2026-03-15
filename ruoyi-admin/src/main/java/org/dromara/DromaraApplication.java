@@ -11,8 +11,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  *
  * @author Lion Li
  */
-@MapperScan("org.dromara.toubiao.mapper")
-@SpringBootApplication(scanBasePackages = {"org.dromara"})
+@MapperScan(value = {"org.hebei.toubiao.mapper", "org.henan.toubiao.mapper"})
+@SpringBootApplication(scanBasePackages = {"org.dromara", "org.hebei", "org.henan"})
 @EnableScheduling
 public class DromaraApplication {
 

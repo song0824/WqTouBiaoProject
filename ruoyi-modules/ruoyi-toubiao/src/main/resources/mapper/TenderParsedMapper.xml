@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="org.dromara.toubiao.mapper.TenderParsedMapper">
+<mapper namespace="org.hebei.toubiao.mapper.TenderParsedMapper">
 
     <!-- 结果映射 -->
-    <resultMap id="BaseResultMap" type="org.dromara.toubiao.domain.TenderProjectDetailParsed">
+    <resultMap id="BaseResultMap" type="org.hebei.toubiao.domain.TenderProjectDetailParsed">
         <id column="id" property="id"/>
         <result column="infoid" property="infoid"/>
         <result column="info_url" property="infoUrl"/>
@@ -47,7 +47,7 @@
     </resultMap>
 
     <!-- 插入（修复版：处理null值） -->
-    <insert id="insert" parameterType="org.dromara.toubiao.domain.TenderProjectDetailParsed">
+    <insert id="insert" parameterType="org.hebei.toubiao.domain.TenderProjectDetailParsed">
         INSERT INTO tender_project_detail_parsed (
             infoid, info_url, prono, proname, budget_amount, tender_method, area,
             publish_time, doc_start_time, doc_end_time, bidding_deadline, kaibiaodate, changdi,
@@ -77,7 +77,7 @@
     </insert>
 
     <!-- 更新 -->
-    <update id="update" parameterType="org.dromara.toubiao.domain.TenderProjectDetailParsed">
+    <update id="update" parameterType="org.hebei.toubiao.domain.TenderProjectDetailParsed">
         UPDATE tender_project_detail_parsed
         <set>
             <if test="infoUrl != null">info_url = #{infoUrl},</if>
@@ -126,7 +126,7 @@
     </select>
 
     <!-- 查询待解析列表 -->
-    <select id="selectUnparsedList" resultType="org.dromara.toubiao.domain.TenderProjectDetail">
+    <select id="selectUnparsedList" resultType="org.hebei.toubiao.domain.TenderProjectDetail">
         SELECT t.id, t.infoid, t.info_url, t.proname, t.prono, t.area, t.kaibiaodate
         FROM tender_project_detail t
                  LEFT JOIN tender_project_detail_parsed p ON t.infoid = p.infoid
